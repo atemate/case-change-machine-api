@@ -23,7 +23,7 @@ jobs:
           path: |
             ~/.local
             ~/.cache/pre-commit
-          key: python-${python_version}-poetry-1.5.1-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: python-${{ env.python_version }}-poetry-1.5.1-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -32,10 +32,10 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Install Python ${python_version}
+      - name: Install Python ${{ env.python_version }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${python_version}
+          python-version: ${{ env.python_version }}
           cache: poetry
 
       - name: Install dependencies
