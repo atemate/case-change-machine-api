@@ -1,1 +1,1 @@
-from .change_machine import return_coins
+from .change_machine import TCoins, return_coins

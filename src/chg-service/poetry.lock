@@ -360,6 +360,21 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pydantic-settings"
+version = "2.0.2"
+description = "Settings management using Pydantic"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pydantic_settings-2.0.2-py3-none-any.whl", hash = "sha256:6183a2abeab465d5a3ab69758e9a22d38b0cc2ba193f0b85f6971a252ea630f6"},
+    {file = "pydantic_settings-2.0.2.tar.gz", hash = "sha256:342337fff50b23585e807a86dec85037900972364435c55c2fc00d16ff080539"},
+]
+
+[package.dependencies]
+pydantic = ">=2.0.1"
+python-dotenv = ">=0.21.0"
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -449,6 +464,23 @@ anyio = ">=3.4.0,<5"
 
 [package.extras]
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
+
+[[package]]
+name = "structlog"
+version = "23.1.0"
+description = "Structured Logging for Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "structlog-23.1.0-py3-none-any.whl", hash = "sha256:79b9e68e48b54e373441e130fa447944e6f87a05b35de23138e475c05d0f7e0e"},
+    {file = "structlog-23.1.0.tar.gz", hash = "sha256:270d681dd7d163c11ba500bc914b2472d2b50a8ef00faa999ded5ff83a2f906b"},
+]
+
+[package.extras]
+dev = ["structlog[docs,tests,typing]"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "twisted"]
+tests = ["coverage[toml]", "freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
+typing = ["mypy", "rich", "twisted"]
 
 [[package]]
 name = "typing-extensions"
@@ -646,4 +678,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "efc94fa8090131273cd1825dfa7a1ddc54a9010a506566fca9070bc1cc45f723"
+content-hash = "7d7726c3e2abefbd2128a4baadfae61515d2f43d89327e8e0e9ffc684165dabf"
