@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
 change-machine-package = {path = "src/chg-package", develop = true}
+change-machine-service = {path = "src/chg-service", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "3.0.1"
