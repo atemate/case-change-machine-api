@@ -1,18 +1,24 @@
 from typing import TypedDict
 
-TypeDenomination = TypedDict(
-    "TypeDenomination",
-    {"name": str, "type": str, "value": int, "value_in_cents": int},
-)
+
+class TDenomination(TypedDict):
+    """Type for storing a `type` coin/banknote of value `value`
+    equal to value in cents `value_in_cents`
+    """
+
+    name: str
+    type: str
+    value: int
+    value_in_cents: int
 
 
-EUR_DENOMINATIONS: list[TypeDenomination] = [
+EUR_DENOMINATIONS: list[TDenomination] = [
     {"name": "cent", "type": "coin", "value": 1, "value_in_cents": 1},
     {"name": "cent", "type": "coin", "value": 2, "value_in_cents": 2},
     {"name": "cent", "type": "coin", "value": 5, "value_in_cents": 5},
     {"name": "cent", "type": "coin", "value": 10, "value_in_cents": 10},
     {"name": "cent", "type": "coin", "value": 20, "value_in_cents": 20},
-    {"name": "quarter", "type": "coin", "value": 25, "value_in_cents": 25},  # TODO: del
+    # {"name": "quarter", "type": "coin", "value": 25, "value_in_cents": 25},
     {"name": "cent", "type": "coin", "value": 50, "value_in_cents": 50},
     {"name": "euro", "type": "coin", "value": 1, "value_in_cents": 100},
     {"name": "euro", "type": "coin", "value": 2, "value_in_cents": 200},
@@ -37,7 +43,7 @@ EUR_COINS_IN_CENTS: list[int] = sorted(
 )
 
 
-def to_eur_unit(value_in_cents: int) -> TypeDenomination:
+def to_eur_unit(value_in_cents: int) -> TDenomination:
     for coin in EUR_DENOMINATIONS:
         if coin["value_in_cents"] == value_in_cents:
             return coin
