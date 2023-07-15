@@ -9,6 +9,9 @@ from .logger import log
 from .settings import ChangeMachineSettings
 
 app = FastAPI()
+api_v1 = FastAPI()
+app.mount("/api/v1", api_v1)
+
 register_exception_handlers(app)
 
 
@@ -17,12 +20,12 @@ def get_chg_settings():
     return ChangeMachineSettings()
 
 
-@app.get("/health")
+@api_v1.get("/health")
 def health():
     return {}
 
 
-@app.get("/info")
+@api_v1.get("/info")
 async def info(
     chg_settings: Annotated[ChangeMachineSettings, Depends(get_chg_settings)]
 ):
@@ -34,7 +37,7 @@ async def info(
     }
 
 
-@app.get("/pay")
+@api_v1.get("/pay")
 def read_item(
     currywurst_price_eur: float,
     eur_inserted: float,
