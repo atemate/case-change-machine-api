@@ -50,7 +50,7 @@ description = ""
 optional = false
 python-versions = "^3.10"
 files = []
-develop = false
+develop = true
 
 [package.source]
 type = "directory"
