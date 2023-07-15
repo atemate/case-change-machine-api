@@ -1,5 +1,4 @@
 install:
-	pip install -U poetry
 	poetry install --with=dev
 
 lint:
