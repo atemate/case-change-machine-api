@@ -12,13 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get python version
+        run: |
+          python_version=$(cat .python-version)
+          echo "python_version=${python_version}" >> $GITHUB_ENV
+
       - name: Cache
         uses: actions/cache@v3
         with:
           path: |
             ~/.local
             ~/.cache/pre-commit
-          key: python-3.10.10-poetry-1.5.1-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: python-${python_version}-poetry-1.5.1-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -27,10 +32,10 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Install Python
+      - name: Install Python ${python_version}
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.10'
+          python-version: ${python_version}
           cache: poetry
 
       - name: Install dependencies
