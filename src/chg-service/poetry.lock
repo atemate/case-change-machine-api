@@ -44,6 +44,19 @@ files = [
 ]
 
 [[package]]
+name = "change-machine-package"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = "^3.10"
+files = []
+develop = false
+
+[package.source]
+type = "directory"
+url = "../chg-package"
+
+[[package]]
 name = "click"
 version = "8.1.5"
 description = "Composable command line interface toolkit"
@@ -633,4 +646,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1c3963d062efe1c4a09a87fe27abe171750168bffdf347cac8357faff9039938"
+content-hash = "efc94fa8090131273cd1825dfa7a1ddc54a9010a506566fca9070bc1cc45f723"

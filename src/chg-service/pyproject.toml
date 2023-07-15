@@ -10,6 +10,7 @@ packages = [{include = "change_machine_service"}]
 python = "^3.10"
 fastapi = "^0.100.0"
 uvicorn = {extras = ["standard"], version = "^0.23.0"}
+change-machine-package = {path = "../chg-package", develop = true}
 
 
 [tool.poetry.group.dev.dependencies]
