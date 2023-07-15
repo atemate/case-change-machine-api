@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 88
+extend-ignore = \
+  E203, \  # whitespace before ':'
+  F841, \  # local variable name is assigned to but never used
+  E266, \  # too many leading '#' for block comment
+per-file-ignores = 
+  # F401: Module imported but unused
+  */__init__.py: F401
