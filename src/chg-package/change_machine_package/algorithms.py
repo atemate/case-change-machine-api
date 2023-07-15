@@ -3,6 +3,14 @@ from collections import Counter
 from .exceptions import ChangeImpossibleError
 
 
+def calculate_change(
+    amount: int, coins: list[int], algorithm: str = "greedy"
+) -> list[int]:
+    if algorithm == "greedy":
+        return greedy_change(amount, coins)
+    raise NotImplementedError(algorithm)
+
+
 def greedy_change(
     amount: int, coins: list[int], force_reverse_coins: bool = False
 ) -> list[int]:

@@ -1,6 +1,6 @@
 from typing import Any
 
-from .algorithms import count_items, greedy_change
+from .algorithms import calculate_change, count_items
 from .currency import EUR_COINS_IN_CENTS, EUR_DENOMINATIONS_IN_CENTS, to_eur_unit
 from .utils import cast_to_int_or_fail
 
@@ -22,10 +22,9 @@ def return_coins(
     )
     change_cents = cents_inserted - currywurst_price_cents
 
-    if algorithm == "greedy":
-        change_cent_coins = greedy_change(change_cents, denominations)
-    else:
-        raise NotImplementedError(algorithm)
+    change_cent_coins = calculate_change(
+        change_cents, denominations, algorithm=algorithm
+    )
 
     change_coins = sorted(
         [
@@ -35,8 +34,6 @@ def return_coins(
         key=lambda pair: -pair[1]["value_in_cents"],
     )
 
-    # summa = sum(c*x["value_in_cents"] for c,x in coins)
-    # assert summa == amount_cents, (summa, amount_cents)
     return [
         {
             "count": count,
