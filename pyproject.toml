@@ -2,7 +2,7 @@
 name = "change-machine"
 version = "0.1.0"
 description = ""
-authors = ["Artem"]
+authors = ["atemate"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
