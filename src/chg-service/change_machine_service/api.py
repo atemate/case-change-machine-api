@@ -1,5 +1,6 @@
 from typing import Any
 
+import uvicorn
 from change_machine_package import return_coins
 from fastapi import FastAPI
 
@@ -44,3 +45,8 @@ def read_item(
         extra=dict(**kwargs, change=change),
     )
     return change
+
+
+if __name__ == "__main__":
+    srv = SETTINGS["server"]
+    uvicorn.run(app, host=srv.host, port=srv.port)

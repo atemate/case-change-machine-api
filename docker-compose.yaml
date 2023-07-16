@@ -7,8 +7,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3003:3003"
-    # environment:
-    #   - DYNAMODB_ENDPOINT_URL=http://dynamodb:8000
+    networks:
+      - default
+    environment:
+      - SRV_HOST=0.0.0.0
+      - SRV_PORT=3003
+      - SRV_PREFIX=
     healthcheck:
       test:
         - CMD-SHELL

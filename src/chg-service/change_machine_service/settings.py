@@ -8,7 +8,7 @@ class ChangeMachineSettings(BaseSettings):
     return_coins_only: bool = True
 
     class Config:
-        env_prefix = "CHG__"
+        env_prefix = "CHG_"
 
 
 class ServerSettings(BaseSettings):
@@ -17,7 +17,7 @@ class ServerSettings(BaseSettings):
     port: int = 8080
 
     class Config:
-        env_prefix = "SRV__"
+        env_prefix = "SRV_"
 
 
 def get_settings() -> dict[str, Any]:
