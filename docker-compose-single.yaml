@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  chg_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    networks:
+      - default
+    environment:
+      - SRV_HOST=0.0.0.0
+      - SRV_PORT=3003
+      - SRV_PREFIX=
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python -c 'import httpx; r = httpx.get("http://localhost:3003/health"); r.raise_for_status()'
+      interval: 2s
+      timeout: 5s
+
+networks:
+  default:
+    name: change-machine-network

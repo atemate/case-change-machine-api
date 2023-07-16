@@ -18,6 +18,7 @@ make unit-tests
 
 - Run in docker-compose:
 ```
+chown -R $USER: ./logs  # outputs of 
 make run-docker
 ```
 
@@ -33,4 +34,8 @@ $ curl 'localhost:3003/pay?eur_inserted=5&currywurst_price_eur=4.9' | jq
     "type": "coin"
   }
 ]
+```
+
+- Run with events:
+```
 ```
