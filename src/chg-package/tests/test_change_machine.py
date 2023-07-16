@@ -16,6 +16,7 @@ ALGORITHMS = ["greedy"]
         (100, 0, 10000),
         (0, 5, -500),  # negative change will be disallowed by the algorithm
         (0, 0, 0),
+        (10, 4.9, 510),  # test for python bug: 4.9 * 100 == 490.00000000000006
     ],
 )
 def test_get_change_cents(

@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "change-machine-service"
+version = "0.1.0"
+description = ""
+authors = ["atemate"]
+readme = "README.md"
+packages = [{include = "change_machine_service"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.100.0"
+uvicorn = {extras = ["standard"], version = "^0.23.0"}
+change-machine-package = {path = "../chg-package", develop = true}
+pydantic-settings = "^2.0.2"
+structlog = "^23.1.0"
+httpx = "^0.24.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

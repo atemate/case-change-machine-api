@@ -6,3 +6,6 @@ lint:
 
 unit-tests:
 	poetry run pytest -sv ./src
+
+run-local:
+	poetry run uvicorn change_machine_service.api:app --reload

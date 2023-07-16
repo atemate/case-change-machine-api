@@ -2,7 +2,7 @@
 name = "change-machine-package"
 version = "0.1.0"
 description = ""
-authors = ["Artem Yushkovskiy <artem.yushkovskiy@deliveryhero.com>"]
+authors = ["atemate"]
 readme = "README.md"
 packages = [{include = "change_machine_package"}]
 
