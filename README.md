@@ -15,3 +15,8 @@ make install
 ```
 make unit-tests
 ```
+
+- Run in docker-compose:
+```
+make run-docker
+```
