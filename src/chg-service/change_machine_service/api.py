@@ -1,23 +1,20 @@
-from functools import lru_cache
-from typing import Annotated, Any
+from typing import Any
 
+import uvicorn
 from change_machine_package import return_coins
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from .exceptions import register_exception_handlers
 from .logger import log
-from .settings import ChangeMachineSettings
+from .settings import get_settings
+
+SETTINGS = get_settings()
 
 app = FastAPI()
 api_v1 = FastAPI()
-app.mount("/api/v1", api_v1)
+app.mount(SETTINGS["server"].prefix, api_v1)
 
 register_exception_handlers(app)
-
-
-@lru_cache()
-def get_chg_settings():
-    return ChangeMachineSettings()
 
 
 @api_v1.get("/health")
@@ -26,23 +23,16 @@ def health():
 
 
 @api_v1.get("/info")
-async def info(
-    chg_settings: Annotated[ChangeMachineSettings, Depends(get_chg_settings)]
-):
-    return {
-        "change_machine": {
-            "algorithm": chg_settings.algorithm,
-            "return_coins_only": chg_settings.return_coins_only,
-        },
-    }
+async def info():
+    return dict(SETTINGS)
 
 
 @api_v1.get("/pay")
 def read_item(
     currywurst_price_eur: float,
     eur_inserted: float,
-    chg_settings: Annotated[ChangeMachineSettings, Depends(get_chg_settings)],
 ):
+    chg_settings = SETTINGS["change_machine"]
     kwargs: dict[str, Any] = dict(
         currywurst_price_eur=currywurst_price_eur,
         eur_inserted=eur_inserted,
@@ -55,3 +45,8 @@ def read_item(
         extra=dict(**kwargs, change=change),
     )
     return change
+
+
+if __name__ == "__main__":
+    srv = SETTINGS["server"]
+    uvicorn.run(app, host=srv.host, port=srv.port)

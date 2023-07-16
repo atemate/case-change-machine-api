@@ -1,4 +1,4 @@
-from .conftest import get_chg_settings_override
+from change_machine_service.settings import get_settings
 
 
 def test_get_health(client):
@@ -9,11 +9,19 @@ def test_get_health(client):
 
 
 def test_get_info(client):
-    chg_settings = get_chg_settings_override()
+    settings = get_settings()
+    srv = settings["server"]
+    chg = settings["change_machine"]
     resp = client.get("/api/v1/info")
     data = resp.json()
     assert resp.status_code == 200, data
-    assert data == {"change_machine": dict(chg_settings)}
+    assert data == {
+        "server": {"prefix": srv.prefix, "host": srv.host, "port": srv.port},
+        "change_machine": {
+            "algorithm": chg.algorithm,
+            "return_coins_only": chg.return_coins_only,
+        },
+    }
 
 
 def test_get_pay(client):

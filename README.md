@@ -15,3 +15,22 @@ make install
 ```
 make unit-tests
 ```
+
+- Run in docker-compose:
+```
+make run-docker
+```
+
+In a separate terminal:
+```
+$ curl 'localhost:3003/pay?eur_inserted=5&currywurst_price_eur=4.9' | jq
+[
+  {
+    "count": 1,
+    "value": 10,
+    "value_in_cents": 10,
+    "name": "cent",
+    "type": "coin"
+  }
+]
+```
