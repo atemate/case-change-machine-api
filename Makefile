@@ -11,7 +11,7 @@ run-local:
 	poetry run uvicorn change_machine_service.api:app --reload
 
 run-docker:
-	docker-compose -f ./docker-compose.yaml up --build chg_service
+	docker-compose -f ./docker-compose.yaml up
 
 stop-docker:
 	docker-compose down --remove-orphans

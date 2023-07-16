@@ -3,6 +3,7 @@ from typing import Any
 import uvicorn
 from change_machine_package import return_coins
 from fastapi import FastAPI
+from starlette_exporter import PrometheusMiddleware
 
 from .exceptions import register_exception_handlers
 from .logger import log
@@ -13,6 +14,7 @@ SETTINGS = get_settings()
 app = FastAPI()
 api_v1 = FastAPI()
 app.mount(SETTINGS["server"].prefix, api_v1)
+app.add_middleware(PrometheusMiddleware)
 
 register_exception_handlers(app)
 
