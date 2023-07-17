@@ -11,7 +11,7 @@ run-local:
 	poetry run uvicorn change_machine_service.api:app --reload
 
 run-docker:
-	docker-compose -f ./docker-compose-single.yaml up
+	docker-compose -f ./docker-compose-single.yaml up --build
 
 stop-docker:
 	docker-compose -f ./docker-compose-single.yaml down --remove-orphans

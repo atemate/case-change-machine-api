@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 import uvicorn
@@ -51,4 +52,4 @@ def read_item(
 
 if __name__ == "__main__":
     srv = SETTINGS["server"]
-    uvicorn.run(app, host=srv.host, port=srv.port)
+    uvicorn.run(app, host=srv.host, port=srv.port, log_level=logging.INFO)

@@ -15,6 +15,8 @@ Function `return_coins()`:
 - returns a single data structure with the correct amount of coins to return for change,
 - works for any positive number.
 
+> Note: we assume that in EUR currency it is possible to form any number with coins and banknotes, so we allow any values in `eur_inserted`.
+
 
 ### Nonfunctional requirements
 - execution time: for any number <= €1000, execution time should be <1 sec
