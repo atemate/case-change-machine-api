@@ -82,6 +82,20 @@ files = [
 ]
 
 [[package]]
+name = "ecs-logging"
+version = "2.0.2"
+description = "Logging formatters for ECS (Elastic Common Schema) in Python"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "ecs_logging-2.0.2-py3-none-any.whl", hash = "sha256:543ed7b634901aee465fddf70f52b6fdbd35e825e7cbcae2e664d7dfdff2f859"},
+    {file = "ecs_logging-2.0.2.tar.gz", hash = "sha256:34567bda91534a480f12117c30e1aac78489cc9a0ace172014d80f3d1e29c85b"},
+]
+
+[package.extras]
+develop = ["elastic-apm", "mock", "pytest", "pytest-cov", "structlog"]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.1.2"
 description = "Backport of PEP 654 (exception groups)"
@@ -495,23 +509,6 @@ prometheus-client = ">=0.12"
 starlette = "*"
 
 [[package]]
-name = "structlog"
-version = "23.1.0"
-description = "Structured Logging for Python"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "structlog-23.1.0-py3-none-any.whl", hash = "sha256:79b9e68e48b54e373441e130fa447944e6f87a05b35de23138e475c05d0f7e0e"},
-    {file = "structlog-23.1.0.tar.gz", hash = "sha256:270d681dd7d163c11ba500bc914b2472d2b50a8ef00faa999ded5ff83a2f906b"},
-]
-
-[package.extras]
-dev = ["structlog[docs,tests,typing]"]
-docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "twisted"]
-tests = ["coverage[toml]", "freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
-typing = ["mypy", "rich", "twisted"]
-
-[[package]]
 name = "typing-extensions"
 version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -707,4 +704,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "5e794d665c616162aad2bd06f9743880f9c6906170920a56cbb474812e778f62"
+content-hash = "54f2fb2eb3dea972d9009681b535679d161cd4442d23c9df8f4f649b1447426e"

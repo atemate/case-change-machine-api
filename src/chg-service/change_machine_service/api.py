@@ -8,9 +8,7 @@ from starlette_exporter import PrometheusMiddleware
 
 from .exceptions import register_exception_handlers
 from .logger import log
-from .settings import get_settings
-
-SETTINGS = get_settings()
+from .settings import SETTINGS
 
 app = FastAPI()
 api_v1 = FastAPI()
