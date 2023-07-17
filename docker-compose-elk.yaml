@@ -1,10 +1,12 @@
 services:
   elasticsearch:
     image: elasticsearch:7.16.1
-    container_name: elasticsearch
+    container_name: es
+    mem_limit: 1600M
+    mem_reservation: 1600M
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms512M -Xmx1g"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -15,9 +17,10 @@ services:
       retries: 3
     networks:
       - elastic
+
   logstash:
     image: logstash:7.16.1
-    container_name: logstash
+    container_name: log
     environment:
       discovery.seed_hosts: logstash
       LS_JAVA_OPTS: "-Xms512m -Xmx512m"
@@ -34,15 +37,42 @@ services:
     networks:
       - elastic
     command: logstash -f /usr/share/logstash/pipeline/logstash-nginx.config
+
   kibana:
     image: kibana:7.16.1
-    container_name: kibana
+    container_name: kib
+    mem_limit: 1024M
+    mem_reservation: 1024M
     ports:
       - "5601:5601"
     depends_on:
       - elasticsearch
     networks:
       - elastic
+
+  change_machine_service:
+    container_name: svc
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    networks:
+      - elastic
+    depends_on:
+      - logstash
+    environment:
+      - SRV_HOST=0.0.0.0
+      - SRV_PORT=3003
+      - SRV_PREFIX=
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python -c 'import httpx; r = httpx.get("http://localhost:3003/health"); r.raise_for_status()'
+      interval: 30s
+      timeout: 5s
+
+
 networks:
   elastic:
     driver: bridge
