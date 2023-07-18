@@ -1,13 +1,19 @@
 from collections import Counter
+from typing import Any
+
+import numpy as np
 
 from .exceptions import ChangeImpossibleError
+from .logging import log
 
 
 def calculate_change(
-    amount: int, coins: list[int], algorithm: str = "greedy"
+    amount: int, coins: list[int], algorithm: str = "greedy_search"
 ) -> list[int]:
-    if algorithm == "greedy":
+    if algorithm == "greedy_search":
         return greedy_change(amount, coins)
+    if algorithm == "dynamic_programming":
+        return dynamic_programming_change(amount, coins)
     raise NotImplementedError(algorithm)
 
 
@@ -35,7 +41,81 @@ def greedy_change(
     if amount == 0:
         return change
 
+    log.error(
+        f"[greedy_algorithm] cannot get change of {amount} with coins {coins}: "
+        f"my best guess is {repr(sum(change))} which is comprised from {change}"
+    )
     raise ChangeImpossibleError(amount, coins)
+
+
+def _get_zeros_matrix(coins: list[int], n: int) -> np.ndarray[Any, Any]:
+    return np.zeros((len(coins) + 1, n + 1), dtype=float)
+
+
+def _get_change_making_matrix(coins: list[int], n: int) -> np.ndarray[Any, Any]:
+    """Creates matrix:
+    array([[ 0., inf, inf, inf, inf, inf, inf],
+       [ 0.,  0.,  0.,  0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.,  0.,  0.,  0.]])
+    """
+    M = _get_zeros_matrix(coins, n)
+    M[0, 1:] = np.inf
+    return M
+
+
+def dynamic_programming_change(amount: int, coins: list[int]) -> list[int]:
+    n = amount
+    M = _get_change_making_matrix(coins, n)  # change matrix
+    U = _get_zeros_matrix(coins, n)  # used coins
+
+    for c, coin in enumerate(coins, 1):
+        for r in range(1, n + 1):
+            # Just use the coin
+            if coin == r:
+                M[c, r] = 1
+                U[c, r] = coin
+            # coin cannot be included.
+            # Use the previous solution for making r,
+            # excluding coin:
+            elif coin > r:
+                M[c, r] = M[c - 1, r]
+                U[c, r] = U[c - 1, r]
+            # coin can be used:
+            # Decide which one of the following solutions is the best:
+            # 1. Using the previous solution for making r (without using coin).
+            # 2. Using the previous solution for making r - coin (without
+            #      using coin) plus this 1 extra coin.
+            else:
+                if M[c - 1, r] < M[c, r - coin] + 1:
+                    M[c, r] = M[c - 1, r]
+                    U[c, r] = U[c - 1, r]
+                else:
+                    M[c, r] = M[c, r - coin + 1]
+                    U[c, r] = coin
+                M[c, r] = min(M[c - 1, r], M[c, r - coin] + 1)
+
+    # Reconstruct the coins used
+    change = []
+    c = len(coins)
+    r = n
+    while c > 0 and r > 0:
+        val = int(U[c, r])
+        if val == 0:
+            c -= 1
+        else:
+            change.append(val)
+            r -= val
+
+    change = change[::-1]
+    summa = sum(change)
+    if summa != n:
+        log.error(
+            f"[dynamic_programming] cannot get change of {n} with coins {coins}: "
+            f"my best guess is {repr(summa)} which is comprised from {change}"
+        )
+        raise ChangeImpossibleError(n, coins)
+    return change
 
 
 def count_items(items: list[int]) -> dict[int, int]:

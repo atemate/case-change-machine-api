@@ -44,3 +44,20 @@ The task is the change-making problem, a special case of the integer knapsack pr
 See implementation in `greedy_change()`.
 
 The idea is to keep selecting the largest denomination coins/notes available to represent a given amount of money, gradually reducing the amount until it reaches zero. The greedy method is already optimal for the Euro currency, but might give non-optimal solutions for other currencies.
+
+The time complexity of this algorithm is `O(L)`, where `L` is the number of available coin denominations.
+
+However, it is important to note that the greedy strategy may not always provide the optimal solution in terms of the minimal number of coins. There may be cases where the greedy approach fails to find the globally optimal solution and instead provides a suboptimal result.
+
+
+### Dynamic programming method
+See implementation in `dynamic_programming_change()`.
+
+The algorithm uses dynamic programming to find the minimal number of coins needed to make change for a given amount:
+- it constructs a matrix where each cell represents the minimal number of coins required to make change for a specific amount using available coin denominations.
+- by iteratively considering each coin denomination and amount, the algorithm fills the matrix by choosing the minimum between using the current coin or excluding it.
+- finally, it backtracks from the bottom-right corner of the matrix to reconstruct the coins used by following the path that leads to the minimal change.
+
+This algorithm is more robust for several corner cases than greedy search algorithm, for example it will be able to find the change `[2, 2, 2]` for amount `6` out of possible coins `[10, 5, 2]`, whereas the greedy search algorithm will fail on finding `[5, 2]` (see test `test_calculate_change_only_greedy_fails` in [src/chg-package/tests/test_algorithms.py](src/chg-package/tests/test_algorithms.py)). Due to our comprehensive unit testing of the first (greedy) algorithm and the effective choice of abstractions using functions over objects or structs, we were able to easily test both algorithms. This was done by using pytest parametrisation: `@pytest.mark.parametrize("algorithm", ALGORITHMS)`.
+
+The time complexity of this algorithm is `O(n * L)`, where `n` is the given amount and `L` is the number of available coin denominations.
