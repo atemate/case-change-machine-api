@@ -39,3 +39,10 @@ $ curl 'localhost:8000/api/v1/pay?eur_inserted=10&currywurst_price_eur=4.9' | jq
   }
 ]
 ```
+
+
+### Configuration
+See [src/chg-service/change_machine_service/settings.py](src/chg-service/change_machine_service/settings.py), which can be overloaded using environment variables.
+For example:
+- specify the change-computation algorithm: `export CHG_ALGORITHM="greedy_search"`
+- specify
