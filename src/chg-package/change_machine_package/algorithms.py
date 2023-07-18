@@ -48,19 +48,11 @@ def greedy_change(
     raise ChangeImpossibleError(amount, coins)
 
 
-def _get_zeros_matrix(coins: list[int], n: int) -> np.ndarray[float, float]:
-    """Creates matrix:
-    array([[0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.]])
-    """
+def _get_zeros_matrix(coins: list[int], n: int) -> np.ndarray[Any, Any]:
     return np.zeros((len(coins) + 1, n + 1), dtype=float)
 
 
-def _get_change_making_matrix(
-    coins: list[int], n: int
-) -> np.ndarray[Any, np.dtype[Any]]:
+def _get_change_making_matrix(coins: list[int], n: int) -> np.ndarray[Any, Any]:
     """Creates matrix:
     array([[ 0., inf, inf, inf, inf, inf, inf],
        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.],
