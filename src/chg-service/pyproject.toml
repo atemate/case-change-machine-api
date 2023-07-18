@@ -13,7 +13,6 @@ uvicorn = {extras = ["standard"], version = "^0.23.0"}
 change-machine-package = {path = "../chg-package", develop = true}
 pydantic-settings = "^2.0.2"
 httpx = "^0.24.1"
-starlette-exporter = "^0.16.0"
 ecs-logging = "^2.0.2"
 
 [build-system]
