@@ -118,54 +118,6 @@ def dynamic_programming_change(amount: int, coins: list[int]) -> list[int]:
     return change
 
 
-# def dynamic_programming_change(amount: int, coins: list[int]) -> list[int]:
-#     M = _get_change_making_matrix(coins, amount)
-#     used_coins = [[0 for _ in range(amount + 1)] for _ in range(len(coins) + 1)]
-
-#     for c, coin in enumerate(coins, 1):
-#         for r in range(1, amount + 1):
-#             # Just use the coin
-#             if coin == r:
-#                 M[c][r] = 1
-#                 used_coins[c][r] = coin
-#             # coin cannot be included.
-#             # Use the previous solution for making r,
-#             # excluding coin:
-#             elif coin > r:
-#                 M[c][r] = M[c - 1][r]
-#                 used_coins[c][r] = used_coins[c - 1][r]
-#             # coin can be used:
-#             # Decide which one of the following solutions is the best:
-#             # 1. Using the previous solution for making r (without using coin).
-#             # 2. Using the previous solution for making r - coin (without
-#             #      using coin) plus this 1 extra coin.
-#             else:
-#                 if M[c - 1][r] < M[c][r - coin] + 1:
-#                     M[c][r] = M[c - 1][r]
-#                     used_coins[c][r] = used_coins[c - 1][r]
-#                 else:
-#                     M[c][r] = M[c][r - coin + 1]
-#                     used_coins[c][r] = coin
-
-#                 M[c][r] = min(M[c - 1][r], M[c][r - coin] + 1)
-
-#     # Reconstruct the coins used
-#     coins_used = []
-#     c = len(coins)
-#     r = amount
-#     while c > 0 and r > 0:
-#         if used_coins[c][r] == 0:
-#             c -= 1
-#         else:
-#             coins_used.append(used_coins[c][r])
-#             r -= used_coins[c][r]
-
-#     change = coins_used[::-1]
-#     if sum(change) != amount:
-#         raise ChangeImpossibleError(amount, coins)
-#     return change
-
-
 def count_items(items: list[int]) -> dict[int, int]:
     """
     Given a list of items with repetition, return the dict mapping
