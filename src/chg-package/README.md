@@ -1,4 +1,4 @@
-# Internals package for the Change Machine
+# Implementation package for the Change Machine
 
 ## Requirements
 
@@ -26,7 +26,7 @@ If the service is to be scaled for many currywurst machines:
 - scalable ?
 
 
-### Ideas for improvements
+### Ideas for future improvements
 - allow giving out banknotes as change
 - stateful (has limited amount of coins and banknotes)
 - forbids accepting several banknotes (e.g. €500)
@@ -39,9 +39,10 @@ Note that as the change-making problem is weakly NP-hard (depends on the currenc
 
 ## Algorithms
 The task is the change-making problem, a special case of the integer knapsack problem, is weakly NP-hard.
+A simple greedy algorithm finds not-always-optimal solution, but is good enough to cover most of the typical cases.
 
 ### Greedy method
-See implementation in `greedy_change()`.
+See implementation `greedy_change()` in [src/chg-package/change_machine_package/algorithms.py](src/chg-package/change_machine_package/algorithms.py)
 
 The idea is to keep selecting the largest denomination coins/notes available to represent a given amount of money, gradually reducing the amount until it reaches zero. The greedy method is already optimal for the Euro currency, but might give non-optimal solutions for other currencies.
 
@@ -51,7 +52,7 @@ However, it is important to note that the greedy strategy may not always provide
 
 
 ### Dynamic programming method
-See implementation in `dynamic_programming_change()`.
+See implementation `dynamic_programming_change()` in [src/chg-package/change_machine_package/algorithms.py](src/chg-package/change_machine_package/algorithms.py)
 
 The algorithm uses dynamic programming to find the minimal number of coins needed to make change for a given amount:
 - it constructs a matrix where each cell represents the minimal number of coins required to make change for a specific amount using available coin denominations.
