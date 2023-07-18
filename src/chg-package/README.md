@@ -41,4 +41,11 @@ The task is the change-making problem, a special case of the integer knapsack pr
 ### Greedy method
 See implementation in `greedy_change()`.
 
-The idea is to keep selecting the largest denomination coins/notes available to represent a given amount of money, gradually reducing the amount until it reaches zero. The greedy_search method is already optimal for the Euro currency, but might give non-optimal solutions for other currencies.
+The idea is to keep selecting the largest denomination coins/notes available to represent a given amount of money, gradually reducing the amount until it reaches zero. The greedy method is already optimal for the Euro currency, but might give non-optimal solutions for other currencies.
+
+
+### Dynamic programming method
+See implementation in `dynamic_programming_change()`
+
+
+
