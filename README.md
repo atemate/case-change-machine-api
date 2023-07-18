@@ -1,8 +1,7 @@
-# case-change-machine
-Test task: REST API for money change machine.
-
-See [src/chg-package/README.md](src/chg-package/README.md) for algorithm implementation details.
-
+# REST API calculating coins for change
+- See algorithm requirements and implementation details in [src/chg-package/README.md](src/chg-package/README.md).
+- See REST API specification in [src/chg-service/README.md](src/chg-service/README.md) 
+![images/kibana-2.png](images/kibana-2.png)
 
 ## Development
 - Requirements:
@@ -19,10 +18,14 @@ make install
 make unit-tests
 ```
 
-## Standalone server
+### Run as standalone server
 - Run in docker-compose:
 ```
 make run-docker
+docker-compose -f ./docker-compose-single.yaml up --build
+[+] Building 1.9s (8/8) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                                                                                                       0.0s
+ => => transferring dockerfile: 32B
 ...
 ^C
 ```
@@ -57,7 +60,7 @@ Cleanup:
 make run-docker
 ```
 
-## Deployment with log collection
+### Deployment with log collection
 As the last part of the task we were asked to persist the history of transactions in order to be able to control if everything works properly:
 - After the payment transaction is processed by the REST API, but before returning the result, create and dispatch a new event to notify about the
 transaction.
@@ -70,7 +73,7 @@ Obviously, semi-structured json payloads must be stored in a no-SQL database opt
 The main question is the transport for the messages.
 
 
-### Solution 1: (async) Message Queues
+#### Solution 1: (async) Message Queues
 First solution that comes to mind is to connect the service with a database via a message queue (RabbitMQ, SQS, PubSub), task queue (Celery) or a streaming service (Kafka, Kinesis).
 The latter services can sometimes store messages for some period and offer SQL-like functionality to query historical data for analytics, however this comes at higher processing costs.
 
@@ -87,12 +90,12 @@ Disadvantages:
 - definitely an overkill for just logging (no need low latency for analytics)
 
 
-### Solution 2: (sync) Separate custom REST API or DB directly
+#### Solution 2: (sync) Separate custom REST API or DB directly
 Alternatively, one could implement a separate custom REST API microservice that would receive a payload and write it to a DB.
 In a simpler setup, one could even connect the main service directly to the database. Both cases would solve the logging issue, however it would be tricky to scale such solution if needed, and also to build it robust and responsive.
 
 
-### Solution 3: (async) Log aggregation tool
+#### Solution 3: (async, chosen) Log aggregation tool
 The most natural solution for logging the payloads and processing results is to process the server logs.
 It could be done with a centralised logging service that would run lightweigh sidecar containers next to each microservice's pod and collect the log entries (possibly with some time delay), and offer righ analytics functionality. Such solutions are: Logstash or Filebeat(+Elasticsearch +Kibana) or fluentd (+for example DataDog).
 
@@ -106,7 +109,7 @@ The beauty of this solution is that:
 - is scalable and robust,
 - when needed, can still be connected to message queues or more advanced log processors (for example to persist logs to other places)
 
-[Filebeat diagram from the [official docs](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-overview.html)](./images/filebeat.png)
+![Filebeat diagram from the [official docs](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-overview.html)](./images/filebeat.png)
 
 In our setup, the data is **persisted to docker volumes**, which can be replaced with K8s PersistentVolumes in a production setup.
 For my knowledge, ELK-based logging system does not provide persistance other than log files, however, as mentioned above, ELK can be easily connected to other databases via message queues.
@@ -143,24 +146,24 @@ $ make run-load-test
 ...
 (press ^C to abort and kill all containers)
 ```
-[images/locust-1.png](images/locust1.png)
+![images/locust-1.png](images/locust-1.png)
 
 - Open http://0.0.0.0:8089/ and click "Start swarming", this will start the load test:
-[images/locust-2.png](images/locust2.png)
+![images/locust-2.png](images/locust-2.png)
 
 - In another terminal, run `make setup-kibana` to load the pre-configured the Kibana dashboard.
 
 - Run `make open-kibana` to open Kibana in browser:
-[images/kibana-1.png](images/kibana-1.png)
+![images/kibana-1.png](images/kibana-1.png)
 
 - Open the Dashboard where we display some of real-time metrics (such as distributions of returned coins, total amounts of coins or EUR, etc):
-[images/kibana-2.png](images/kibana-2.png)
+![images/kibana-2.png](images/kibana-2.png)
 
 - Find "Discover" section and get access to the individual payloads:
-[images/kibana-3.png](images/kibana-3.png)
+![images/kibana-3.png](images/kibana-3.png)
 
 - Note also how an analyst can do filtering on the values:
- [images/kibana-4.png](images/kibana-4.png)
+![images/kibana-4.png](images/kibana-4.png)
 
 
 - Press ^C in both terminals to cancel docker-compose, cleanup:

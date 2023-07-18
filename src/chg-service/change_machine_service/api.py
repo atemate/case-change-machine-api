@@ -26,7 +26,7 @@ async def get_info():
     return dict(SETTINGS)
 
 
-@api_v1.get("/pay")
+@api_v1.post("/pay")
 def get_pay(
     currywurst_price_eur: float,
     eur_inserted: float,

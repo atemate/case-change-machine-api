@@ -1,6 +1,6 @@
-# REST API service for Change Machine
+# REST API service for the Change Machine
 
-### Usage:
+### API specification
 ```
 $ make run-local
 poetry run uvicorn change_machine_service.api:app --reload
@@ -44,9 +44,16 @@ $ curl 'localhost:8000/api/v1/pay?eur_inserted=10&currywurst_price_eur=4.9' | jq
 }
 ```
 
+For more complete API specification please check http://127.0.0.1:8000/api/v1/docs
+![../../images/openapi.png](../../images/openapi.png)
 
 ### Configuration
-See [src/chg-service/change_machine_service/settings.py](src/chg-service/change_machine_service/settings.py), which can be overloaded using environment variables.
+See [src/chg-service/change_machine_service/settings.py](src/chg-service/change_machine_service/settings.py), which can be overloaded using environment variables with the server restart.
 For example:
 - specify the change-computation algorithm: `export CHG_ALGORITHM="greedy_search"`
 - specify log file path (defaults to none): `export SRV_LOG_FILE="/path/to/log.ndjson"`
+
+
+### Load testing
+Reports not recorded, but when tested in local docker, the server holds ~300 rps with latency ~50 ms:
+![../../images/locust-2.png](../../images/locust-2.png)
