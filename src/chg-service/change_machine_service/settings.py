@@ -15,7 +15,7 @@ class ServerSettings(BaseSettings):
     prefix: str = "/api/v1"
     host: str = "0.0.0.0"
     port: int = 8080
-    log_file: str = "/logs/fastapi.ndjson"
+    log_file: str | None = None
 
     class Config:
         env_prefix = "SRV_"
