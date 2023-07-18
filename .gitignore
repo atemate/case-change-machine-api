@@ -1,5 +1,5 @@
-# output of kafka, postgres, etc
-/logs/
+# output of services
+/logs/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

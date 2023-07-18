@@ -19,17 +19,17 @@ register_exception_handlers(app)
 
 
 @api_v1.get("/health")
-def health():
+def get_health():
     return {}
 
 
 @api_v1.get("/info")
-async def info():
+async def get_info():
     return dict(SETTINGS)
 
 
 @api_v1.get("/pay")
-def read_item(
+def get_pay(
     currywurst_price_eur: float,
     eur_inserted: float,
 ):
