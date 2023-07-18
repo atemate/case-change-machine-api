@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-import ecs_logging
+import ecs_logging  # logging in elastic-compatible format 
 
 from .settings import SETTINGS
 
