@@ -1,11 +1,12 @@
 version: '3.7'
 
 services:
+  # Elasticsearch - db
   elasticsearch:
     image: elasticsearch:7.16.1
-    container_name: elasticsearch
-    mem_limit: 1600M
-    mem_reservation: 1600M
+    container_name: elastic
+    mem_limit: 2000M
+    mem_reservation: 2000M
     environment:
       discovery.type: single-node
       ES_JAVA_OPTS: "-Xms512M -Xmx1g"
@@ -20,29 +21,9 @@ services:
     networks:
       - elastic
     volumes:
-      - ./elasticsearch_data:/usr/share/elasticsearch/data
+      - ./logs/elasticsearch:/usr/share/elasticsearch/data
 
-
-  # logstash:
-  #   image: logstash:7.16.1
-  #   container_name: logstash
-  #   environment:
-  #     discovery.seed_hosts: logstash
-  #     LS_JAVA_OPTS: "-Xms512m -Xmx512m"
-  #   volumes:
-  #     - ./logstash/pipeline/logstash-nginx.config:/usr/share/logstash/pipeline/logstash-nginx.config
-  #     - ./logstash/nginx.log:/home/nginx.log
-  #   ports:
-  #     - "5000:5000/tcp"
-  #     - "5000:5000/udp"
-  #     - "5044:5044"
-  #     - "9600:9600"
-  #   depends_on:
-  #     - elasticsearch
-  #   networks:
-  #     - elastic
-  #   command: logstash -f /usr/share/logstash/pipeline/logstash-nginx.config
-  
+  # Kibana - dashboard
   kibana:
     image: kibana:7.16.1
     container_name: kibana
@@ -51,30 +32,33 @@ services:
     ports:
       - "5601:5601"
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     networks:
       - elastic
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:5601/api/task_manager/_health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
+  # Filebeat - log collector sidecar
   filebeat:
-    image: docker.elastic.co/beats/filebeat-oss:7.9.3
+    image: docker.elastic.co/beats/filebeat-oss:7.16.1 #8.8.2
     container_name: filebeat
     volumes:
-      - fastapi-logs:/logs
-      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs/chg-service:/logs
+      - ./docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     networks:
       - elastic
     depends_on:
       - elasticsearch
       - kibana
-    # environment:
-    #   - ELASTICSEARCH_HOST=http://elasticsearch:9200
-      # - KIBANA_HOST=http://kibana:5601
-    command: ["--strict.perms=false"]
+    command: ["--strict.perms=false", "-c", "/usr/share/filebeat/filebeat.yml"]
 
-
-
+  # User service
   change_machine_service:
     container_name: changemachine
     depends_on:
@@ -97,10 +81,8 @@ services:
       interval: 10s
       timeout: 5s
     volumes:
-        - fastapi-logs:/logs
+        - ./logs/chg-service:/logs
 
-volumes:
-  fastapi-logs:
 
 networks:
   elastic:

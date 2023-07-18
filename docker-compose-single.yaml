@@ -14,6 +14,7 @@ services:
       - SRV_HOST=0.0.0.0
       - SRV_PORT=3003
       - SRV_PREFIX=
+      - SRV_LOG_FILE=/tmp/log.ndjson
     healthcheck:
       test:
         - CMD-SHELL
