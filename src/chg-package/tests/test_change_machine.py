@@ -32,7 +32,6 @@ def test_get_change_cents(
 def test_count_items_return_coins_only_true(algorithm: str) -> None:
     currywurst_price_eur = 1.23
     eur_inserted = 500
-    expected_cents = (eur_inserted - currywurst_price_eur) * 100
 
     actual = return_coins(
         currywurst_price_eur=currywurst_price_eur,
@@ -40,28 +39,53 @@ def test_count_items_return_coins_only_true(algorithm: str) -> None:
         algorithm=algorithm,
         return_coins_only=True,
     )
-    assert actual == [
-        {
-            "count": 249,
-            "name": "euro",
-            "type": "coin",
-            "value": 2,
-            "value_in_cents": 200,
-        },
-        {"count": 1, "name": "cent", "type": "coin", "value": 50, "value_in_cents": 50},
-        {"count": 1, "name": "cent", "type": "coin", "value": 20, "value_in_cents": 20},
-        {"count": 1, "name": "cent", "type": "coin", "value": 5, "value_in_cents": 5},
-        {"count": 1, "name": "cent", "type": "coin", "value": 2, "value_in_cents": 2},
-    ]
-    actual_cents = sum(x["value_in_cents"] * x["count"] for x in actual)
-    assert actual_cents == expected_cents
+    assert actual == {
+        "total_coins": 253,
+        "total_eur": 498.77,
+        "coins": [
+            {
+                "count": 249,
+                "name": "euro",
+                "type": "coin",
+                "value": 2,
+                "value_in_cents": 200,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 50,
+                "value_in_cents": 50,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 20,
+                "value_in_cents": 20,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 5,
+                "value_in_cents": 5,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 2,
+                "value_in_cents": 2,
+            },
+        ],
+    }
 
 
 @pytest.mark.parametrize("algorithm", ALGORITHMS)
 def test_count_items_return_coins_only_false(algorithm: str) -> None:
     currywurst_price_eur = 1.23
     eur_inserted = 500
-    expected_cents = (eur_inserted - currywurst_price_eur) * 100
 
     actual = return_coins(
         currywurst_price_eur=currywurst_price_eur,
@@ -69,41 +93,79 @@ def test_count_items_return_coins_only_false(algorithm: str) -> None:
         algorithm=algorithm,
         return_coins_only=False,
     )
-    assert actual == [
-        {
-            "count": 2,
-            "name": "euro",
-            "type": "banknote",
-            "value": 200,
-            "value_in_cents": 20000,
-        },
-        {
-            "count": 1,
-            "name": "euro",
-            "type": "banknote",
-            "value": 50,
-            "value_in_cents": 5000,
-        },
-        {
-            "count": 2,
-            "name": "euro",
-            "type": "banknote",
-            "value": 20,
-            "value_in_cents": 2000,
-        },
-        {
-            "count": 1,
-            "name": "euro",
-            "type": "banknote",
-            "value": 5,
-            "value_in_cents": 500,
-        },
-        {"count": 1, "name": "euro", "type": "coin", "value": 2, "value_in_cents": 200},
-        {"count": 1, "name": "euro", "type": "coin", "value": 1, "value_in_cents": 100},
-        {"count": 1, "name": "cent", "type": "coin", "value": 50, "value_in_cents": 50},
-        {"count": 1, "name": "cent", "type": "coin", "value": 20, "value_in_cents": 20},
-        {"count": 1, "name": "cent", "type": "coin", "value": 5, "value_in_cents": 5},
-        {"count": 1, "name": "cent", "type": "coin", "value": 2, "value_in_cents": 2},
-    ]
-    actual_cents = sum(x["value_in_cents"] * x["count"] for x in actual)
-    assert actual_cents == expected_cents
+    assert actual == {
+        "total_coins": 12,
+        "total_eur": 498.77,
+        "coins": [
+            {
+                "count": 2,
+                "name": "euro",
+                "type": "banknote",
+                "value": 200,
+                "value_in_cents": 20000,
+            },
+            {
+                "count": 1,
+                "name": "euro",
+                "type": "banknote",
+                "value": 50,
+                "value_in_cents": 5000,
+            },
+            {
+                "count": 2,
+                "name": "euro",
+                "type": "banknote",
+                "value": 20,
+                "value_in_cents": 2000,
+            },
+            {
+                "count": 1,
+                "name": "euro",
+                "type": "banknote",
+                "value": 5,
+                "value_in_cents": 500,
+            },
+            {
+                "count": 1,
+                "name": "euro",
+                "type": "coin",
+                "value": 2,
+                "value_in_cents": 200,
+            },
+            {
+                "count": 1,
+                "name": "euro",
+                "type": "coin",
+                "value": 1,
+                "value_in_cents": 100,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 50,
+                "value_in_cents": 50,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 20,
+                "value_in_cents": 20,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 5,
+                "value_in_cents": 5,
+            },
+            {
+                "count": 1,
+                "name": "cent",
+                "type": "coin",
+                "value": 2,
+                "value_in_cents": 2,
+            },
+        ],
+    }

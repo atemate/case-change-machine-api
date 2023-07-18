@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  locust_master:
+    image: locustio/locust
+    networks:
+      - elastic
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./load-test/:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://change_machine_service:3003
+  
+  locust_worker:
+    image: locustio/locust
+    networks:
+      - elastic
+    volumes:
+      - ./load-test/:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host locust_master
+
+networks:
+  elastic:
+    name: changemachinenet
+    driver: bridge
