@@ -1,5 +1,7 @@
 # case-change-machine
-Test task: REST API for money change machine
+Test task: REST API for money change machine.
+
+See [src/chg-package/README.md](src/chg-package/README.md) for algorithm implementation details.
 
 
 ## Development
@@ -124,6 +126,9 @@ Docker version 23.0.0, build e92dd87c32
 $ docker-compose --version
 Docker Compose version 2.16.0
 ```
+
+**WARNING**: The setup is for demo purposes, many security features are disabled, do NOT run in production systems.
+
 
 - Run ELK (strictly speaking EFK, with Filebeat instead of Logstash) services and our change machine microservice (see [docker-compose-elk.yaml](docker-compose-elk.yaml))
 ```
