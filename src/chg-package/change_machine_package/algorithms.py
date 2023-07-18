@@ -8,6 +8,8 @@ def calculate_change(
 ) -> list[int]:
     if algorithm == "greedy":
         return greedy_change(amount, coins)
+    if algorithm == "dynamic_programming":
+        return dynamic_programming_change(amount, coins)
     raise NotImplementedError(algorithm)
 
 
@@ -38,16 +40,16 @@ def greedy_change(
     raise ChangeImpossibleError(amount, coins)
 
 
-def _get_change_making_matrix(set_of_coins, r: int):
-    M = [[0 for _ in range(r + 1)] for _ in range(len(set_of_coins) + 1)]
-    for i in range(1, r + 1):
+def _get_change_making_matrix(set_of_coins, amount: int):
+    M = [[0 for _ in range(amount + 1)] for _ in range(len(set_of_coins) + 1)]
+    for i in range(1, amount + 1):
         M[0][i] = float("inf")  # By default there is no way of making change
     return M
 
 
 def dynamic_programming_change(
-    coins: list[int],
     amount: int,
+    coins: list[int]
 ) -> list[int]:
     M = _get_change_making_matrix(coins, amount)
     for c, coin in enumerate(coins, 1):
