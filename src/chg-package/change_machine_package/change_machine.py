@@ -25,7 +25,7 @@ def get_change_cents(eur_inserted: float, price_eur: float) -> int:
 def return_coins(
     currywurst_price_eur: float,
     eur_inserted: float,
-    algorithm: str = "greedy",
+    algorithm: str = "greedy_search",
     return_coins_only: bool = True,
 ) -> list[TCoins]:
     denominations = (

@@ -1,7 +1,7 @@
 import pytest
 from change_machine_package.change_machine import get_change_cents, return_coins
 
-ALGORITHMS = ["greedy"]
+ALGORITHMS = ["greedy_search", "dynamic_programming"]
 
 
 @pytest.mark.parametrize(

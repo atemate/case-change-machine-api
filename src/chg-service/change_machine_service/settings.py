@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 
 class ChangeMachineSettings(BaseSettings):
-    algorithm: str = "dynamic_programming" # ["greedy", "dynamic_programming"]
+    algorithm: str = "dynamic_programming"  # ["greedy_search", "dynamic_programming"]
     return_coins_only: bool = True
 
     class Config:

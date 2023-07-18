@@ -49,4 +49,4 @@ def to_eur_unit(value_in_cents: int) -> TDenomination:
     for coin in EUR_DENOMINATIONS:
         if coin["value_in_cents"] == value_in_cents:
             return coin
-    raise ValueError(f"Coin of value in cents {value_in_cents} not found")
+    raise ValueError(f"Coin of value in cents {repr(value_in_cents)} not found")
