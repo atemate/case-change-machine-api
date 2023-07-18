@@ -46,17 +46,17 @@ services:
 
   # Filebeat - log collector sidecar
   filebeat:
-    image: docker.elastic.co/beats/filebeat-oss:7.16.1 #8.8.2
+    image: docker.elastic.co/beats/filebeat-oss:7.16.1
     container_name: filebeat
     volumes:
-      - logs-chg-service:/logs
+      - logs-chg-service:/logs  # -> reads logs from these files
       - ./docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     networks:
       - elastic
     depends_on:
       - elasticsearch
       - kibana
-    command: ["--strict.perms=false", "-c", "/usr/share/filebeat/filebeat.yml"]
+    command: ["--strict.perms=false", "-c", "/usr/share/filebeat/filebeat.yml"]  # security disabled for test env
 
   # User service
   change_machine_service:
@@ -74,7 +74,7 @@ services:
       - SRV_HOST=0.0.0.0
       - SRV_PORT=3003
       - SRV_PREFIX=
-      - SRV_LOG_FILE=/logs/fastapi.ndjson
+      - SRV_LOG_FILE=/logs/fastapi.ndjson  # <- writes logs to this file
     healthcheck:
       test:
         - CMD-SHELL
@@ -83,7 +83,6 @@ services:
       timeout: 5s
     volumes:
         - logs-chg-service:/logs
-
 
 networks:
   elastic:

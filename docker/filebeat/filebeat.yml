@@ -1,5 +1,6 @@
 name: "changemachine-filebeat"
 
+# security disabled for test environment
 logging.metrics.enabled: true
 xpack.security.enabled: false
 xpack.monitoring.enabled: false
@@ -8,22 +9,12 @@ setup.ilm.enabled: false
 filebeat.inputs:
   - type: filestream
     paths:
-      - /logs/fastapi.ndjson
+      - /logs/*.ndjson
     parsers:
       - ndjson:
         overwrite_keys: true 
         add_error_key: true 
         expand_keys: true 
-    # fields:
-    #   - service: changemachine
-    # json:
-    #   fields_under_root: true
-    #   overwrite_keys: true
-    #   message_key: event
-  # processors:
-  #   - decode_json_fields:
-  #       fields: ['event']
-  #       target: json
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]

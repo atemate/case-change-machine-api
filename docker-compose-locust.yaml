@@ -18,9 +18,6 @@ services:
     volumes:
       - ./load-test/:/mnt/locust
     command: -f /mnt/locust/locustfile.py --worker --master-host locust_master
-    # environment:
-    #   SERVER_HOST: change_machine_service
-    #   SERVER_PORT: 3003
 
 networks:
   elastic:
