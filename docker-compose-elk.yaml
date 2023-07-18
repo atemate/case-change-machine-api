@@ -21,7 +21,7 @@ services:
     networks:
       - elastic
     volumes:
-      - ./logs/elasticsearch:/usr/share/elasticsearch/data
+      - logs-elasticsearch:/usr/share/elasticsearch/data
 
   # Kibana - dashboard
   kibana:
@@ -49,7 +49,7 @@ services:
     image: docker.elastic.co/beats/filebeat-oss:7.16.1 #8.8.2
     container_name: filebeat
     volumes:
-      - ./logs/chg-service:/logs
+      - logs-chg-service:/logs
       - ./docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     networks:
       - elastic
@@ -74,6 +74,7 @@ services:
       - SRV_HOST=0.0.0.0
       - SRV_PORT=3003
       - SRV_PREFIX=
+      - SRV_LOG_FILE=/logs/fastapi.ndjson
     healthcheck:
       test:
         - CMD-SHELL
@@ -81,10 +82,14 @@ services:
       interval: 10s
       timeout: 5s
     volumes:
-        - ./logs/chg-service:/logs
+        - logs-chg-service:/logs
 
 
 networks:
   elastic:
     name: changemachinenet
     driver: bridge
+
+volumes:
+  logs-chg-service:
+  logs-elasticsearch:

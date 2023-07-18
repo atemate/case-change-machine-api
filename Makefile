@@ -24,20 +24,20 @@ cleanup-docker-elk:
 	docker-compose -f docker-compose-elk.yaml down --remove-orphans -v
 
 
-open-kibana:
-	open http://localhost:5601/app/dashboards
-
 setup-kibana:
 	KIBANA_URL=http://localhost:5601 \
 	DATA_VIEW_CONFIG_NDJSON=docker/kibana/coins-dashboard.ndjson \
 	sh ./docker/kibana/curl-create-dashboard.sh
+
+open-kibana:
+	open http://localhost:5601/app/dashboards
 
 
 run-load-test:
 	docker-compose -f docker-compose-locust.yaml up --scale locust_worker=2
 
 cleanup-load-test:
-	docker-compose -f docker-compose-locust.yaml down --remove-orphans -v
+	docker-compose -f docker-compose-locust.yaml down
 
 
 # disable make caching:
