@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 import uvicorn
@@ -6,9 +7,7 @@ from fastapi import FastAPI
 
 from .exceptions import register_exception_handlers
 from .logger import log
-from .settings import get_settings
-
-SETTINGS = get_settings()
+from .settings import SETTINGS
 
 app = FastAPI()
 api_v1 = FastAPI()
@@ -18,17 +17,17 @@ register_exception_handlers(app)
 
 
 @api_v1.get("/health")
-def health():
+def get_health():
     return {}
 
 
 @api_v1.get("/info")
-async def info():
+async def get_info():
     return dict(SETTINGS)
 
 
 @api_v1.get("/pay")
-def read_item(
+def get_pay(
     currywurst_price_eur: float,
     eur_inserted: float,
 ):
@@ -49,4 +48,4 @@ def read_item(
 
 if __name__ == "__main__":
     srv = SETTINGS["server"]
-    uvicorn.run(app, host=srv.host, port=srv.port)
+    uvicorn.run(app, host=srv.host, port=srv.port, log_level=logging.INFO)

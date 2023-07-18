@@ -1,0 +1,94 @@
+version: '3.7'
+
+services:
+  # Elasticsearch - db
+  elasticsearch:
+    image: elasticsearch:7.16.1
+    container_name: elastic
+    mem_limit: 2000M
+    mem_reservation: 2000M
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms512M -Xmx1g"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    networks:
+      - elastic
+    volumes:
+      - logs-elasticsearch:/usr/share/elasticsearch/data
+
+  # Kibana - dashboard
+  kibana:
+    image: kibana:7.16.1
+    container_name: kibana
+    mem_limit: 1024M
+    mem_reservation: 1024M
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - elastic
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:5601/api/task_manager/_health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  # Filebeat - log collector sidecar
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.16.1
+    container_name: filebeat
+    volumes:
+      - logs-chg-service:/logs  # -> reads logs from these files
+      - ./docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+      - kibana
+    command: ["--strict.perms=false", "-c", "/usr/share/filebeat/filebeat.yml"]  # security disabled for test env
+
+  # User service
+  change_machine_service:
+    container_name: changemachine
+    depends_on:
+      - filebeat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    networks:
+      - elastic
+    environment:
+      - SRV_HOST=0.0.0.0
+      - SRV_PORT=3003
+      - SRV_PREFIX=
+      - SRV_LOG_FILE=/logs/fastapi.ndjson  # <- writes logs to this file
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python -c 'import httpx; r = httpx.get("http://localhost:3003/health"); r.raise_for_status()'
+      interval: 10s
+      timeout: 5s
+    volumes:
+        - logs-chg-service:/logs
+
+networks:
+  elastic:
+    name: changemachinenet
+    driver: bridge
+
+volumes:
+  logs-chg-service:
+  logs-elasticsearch:

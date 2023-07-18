@@ -1,0 +1,34 @@
+name: "changemachine-filebeat"
+
+# security disabled for test environment
+logging.metrics.enabled: true
+xpack.security.enabled: false
+xpack.monitoring.enabled: false
+setup.ilm.enabled: false
+
+filebeat.inputs:
+  - type: filestream
+    paths:
+      - /logs/*.ndjson
+    parsers:
+      - ndjson:
+        overwrite_keys: true 
+        add_error_key: true 
+        expand_keys: true 
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "changemachine"
+
+setup.kibana:
+  host: "http://kibana:5601"
+
+setup.template:
+  type: index
+  enabled: true
+  name: "changemachine"
+  pattern: "changemachine*"
+
+logging:
+  level: info
+  to_stderr: true

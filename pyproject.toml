@@ -13,6 +13,7 @@ change-machine-service = {path = "src/chg-service", develop = true}
 [tool.poetry.group.dev.dependencies]
 pre-commit = "3.0.1"
 pytest = "7.2.1"
+locust = "2.15.1"
 
 [build-system]
 requires = ["poetry-core"]

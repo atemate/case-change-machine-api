@@ -1,9 +1,7 @@
 from typing import TypedDict
 
 
-class TDenomination(
-    TypedDict,
-):
+class TDenomination(TypedDict):
     """Type for storing a `type` coin/banknote of value `value`
     equal to value in cents `value_in_cents`
     """

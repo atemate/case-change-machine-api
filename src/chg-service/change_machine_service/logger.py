@@ -1,19 +1,27 @@
 import logging
+from pathlib import Path
 
-import structlog
+import ecs_logging  # logging in elastic-compatible format
 
-
-def setup_logger():
-    # TODO: configure logger using settings
-    logging.basicConfig(level=logging.INFO)
-    structlog.configure(
-        processors=[
-            structlog.stdlib.add_log_level,
-            structlog.processors.TimeStamper(fmt="iso"),
-            structlog.processors.format_exc_info,
-            structlog.processors.JSONRenderer(),
-        ],
-    )
+from .settings import SETTINGS
 
 
-log = structlog.get_logger()
+def setup_logger(log_file: str | None = None) -> logging.Logger:
+    logger = logging.getLogger("app")
+    logger.setLevel(logging.DEBUG)
+
+    handlers: list[logging.Handler] = [
+        logging.StreamHandler(),
+    ]
+    if log_file:
+        Path(log_file).parent.mkdir(exist_ok=True, parents=True)
+        handlers.append(logging.FileHandler(filename=log_file))
+
+    for handler in handlers:
+        handler.setFormatter(ecs_logging.StdlibFormatter())
+        logger.addHandler(handler)
+
+    return logger
+
+
+log = setup_logger(SETTINGS["server"].log_file)

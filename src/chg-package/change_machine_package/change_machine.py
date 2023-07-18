@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 from .algorithms import calculate_change, count_items
 from .currency import (
     EUR_COINS_IN_CENTS,
@@ -9,9 +11,17 @@ from .utils import cast_to_int_or_fail
 
 
 class TCoins(TDenomination):
-    """Type for storing `count` coins/banknotes of the same value"""
+    """Type for storing `count` coins/banknotes of the same value."""
 
     count: int
+
+
+class TChange(TypedDict):
+    """Type for storing the change - the output of the service."""
+
+    total_coins: float
+    total_eur: float
+    coins: list[TCoins]
 
 
 def get_change_cents(eur_inserted: float, price_eur: float) -> int:
@@ -27,7 +37,7 @@ def return_coins(
     eur_inserted: float,
     algorithm: str = "greedy",
     return_coins_only: bool = True,
-) -> list[TCoins]:
+) -> TChange:
     denominations = (
         EUR_COINS_IN_CENTS if return_coins_only else EUR_DENOMINATIONS_IN_CENTS
     )
@@ -46,4 +56,11 @@ def return_coins(
         for cents, count in count_items(change_cent_coins).items()
     ]
     change_coins.sort(key=lambda coin: coin["value_in_cents"], reverse=True)
-    return change_coins
+
+    total_coins = sum(c["count"] for c in change_coins)
+    total_eur = sum(c["value_in_cents"] * c["count"] for c in change_coins) / 100
+    return {
+        "total_coins": total_coins,
+        "total_eur": total_eur,
+        "coins": change_coins,
+    }

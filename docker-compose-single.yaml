@@ -1,7 +1,8 @@
 version: '3.7'
 
 services:
-  chg_service:
+  change_machine_service:
+    container_name: changemachine
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,11 +14,12 @@ services:
       - SRV_HOST=0.0.0.0
       - SRV_PORT=3003
       - SRV_PREFIX=
+      - SRV_LOG_FILE=/tmp/log.ndjson
     healthcheck:
       test:
         - CMD-SHELL
-        - python -c 'import httpx; r = httpx.get("http://localhost:3003/api/v1/health"); r.raise_for_status()'
-      interval: 2s
+        - python -c 'import httpx; r = httpx.get("http://localhost:3003/health"); r.raise_for_status()'
+      interval: 10s
       timeout: 5s
 
 networks:

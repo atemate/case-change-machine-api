@@ -11,11 +11,34 @@ run-local:
 	poetry run uvicorn change_machine_service.api:app --reload
 
 run-docker:
-	docker-compose -f ./docker-compose.yaml up --build chg_service
+	docker-compose -f ./docker-compose-single.yaml up --build
 
-stop-docker:
-	docker-compose down --remove-orphans
+cleanup-docker:
+	docker-compose -f ./docker-compose-single.yaml down --remove-orphans -v
+
+
+run-docker-elk:
+	docker-compose -f docker-compose-elk.yaml up --build
+
+cleanup-docker-elk:
+	docker-compose -f docker-compose-elk.yaml down --remove-orphans -v
+
+
+setup-kibana:
+	KIBANA_URL=http://localhost:5601 \
+	DATA_VIEW_CONFIG_NDJSON=docker/kibana/coins-dashboard.ndjson \
+	sh ./docker/kibana/curl-create-dashboard.sh
+
+open-kibana:
+	open http://localhost:5601/app/dashboards
+
+
+run-load-test:
+	docker-compose -f docker-compose-locust.yaml up --scale locust_worker=2
+
+cleanup-load-test:
+	docker-compose -f docker-compose-locust.yaml down
 
 
 # disable make caching:
-.PHONY: install lint unit-tests run-docker run-local stop-docker
+.PHONY: install lint unit-tests run-local run-docker cleanup-docker run-docker-elk cleanup-docker-elk open-kibana setup-kibana run-load-test cleanup-load-test
