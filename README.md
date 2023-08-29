@@ -1,9 +1,16 @@
-# REST API calculating coins for change
-- See algorithm requirements and implementation details in [src/chg-package/README.md](src/chg-package/README.md).
-- See REST API specification in [src/chg-service/README.md](src/chg-service/README.md) 
-![images/kibana-2.png](images/kibana-2.png)
+# case-change-machine-api
+Use-case for a REST API service returning the minimum amount of coins for change for a product price in EUR:
+```python
+def return_coins(product_price_eur: float, eur_inserted: float) -> dict:
+    ...
+```
+![images/openapi.png](/images/openapi.png)
 
-## Development
+- See algorithm requirements and implementations (Greedy and Dynamic Programming) in [src/chg-package/README.md](src/chg-package/README.md).
+- See REST API specification in [src/chg-service/README.md](src/chg-service/README.md) 
+
+
+## Local development
 - Requirements:
     - Python 3.10 (install via pyenv)
     - Poetry (`pip install -U poetry`)
@@ -32,7 +39,7 @@ docker-compose -f ./docker-compose-single.yaml up --build
 
 In a separate terminal:
 ```
-$ curl 'localhost:3003/pay?eur_inserted=15&currywurst_price_eur=4.9' | jq
+$ curl 'localhost:3003/pay?eur_inserted=15&product_price_eur=4.9' | jq
 {
   "total_coins": 6,
   "total_eur": 10.1,

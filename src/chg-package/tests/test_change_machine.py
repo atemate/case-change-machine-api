@@ -30,11 +30,11 @@ def test_get_change_cents(
 
 @pytest.mark.parametrize("algorithm", ALGORITHMS)
 def test_count_items_return_coins_only_true(algorithm: str) -> None:
-    currywurst_price_eur = 1.23
+    product_price_eur = 1.23
     eur_inserted = 500
 
     actual = return_coins(
-        currywurst_price_eur=currywurst_price_eur,
+        product_price_eur=product_price_eur,
         eur_inserted=eur_inserted,
         algorithm=algorithm,
         return_coins_only=True,
@@ -84,11 +84,11 @@ def test_count_items_return_coins_only_true(algorithm: str) -> None:
 
 @pytest.mark.parametrize("algorithm", ALGORITHMS)
 def test_count_items_return_coins_only_false(algorithm: str) -> None:
-    currywurst_price_eur = 1.23
+    product_price_eur = 1.23
     eur_inserted = 500
 
     actual = return_coins(
-        currywurst_price_eur=currywurst_price_eur,
+        product_price_eur=product_price_eur,
         eur_inserted=eur_inserted,
         algorithm=algorithm,
         return_coins_only=False,

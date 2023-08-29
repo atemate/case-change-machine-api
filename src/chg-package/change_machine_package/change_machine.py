@@ -7,6 +7,7 @@ from .currency import (
     TDenomination,
     to_eur_unit,
 )
+from .exceptions import InsertedNotEnoughError
 from .utils import cast_to_int_or_fail
 
 
@@ -33,15 +34,18 @@ def get_change_cents(eur_inserted: float, price_eur: float) -> int:
 
 
 def return_coins(
-    currywurst_price_eur: float,
+    product_price_eur: float,
     eur_inserted: float,
     algorithm: str = "greedy_search",
     return_coins_only: bool = True,
 ) -> TChange:
+    if eur_inserted < product_price_eur:
+        raise InsertedNotEnoughError(product_price_eur, eur_inserted)
+
     denominations = (
         EUR_COINS_IN_CENTS if return_coins_only else EUR_DENOMINATIONS_IN_CENTS
     )
-    change_cents = get_change_cents(eur_inserted, currywurst_price_eur)
+    change_cents = get_change_cents(eur_inserted, product_price_eur)
 
     change_cent_coins = calculate_change(
         change_cents,

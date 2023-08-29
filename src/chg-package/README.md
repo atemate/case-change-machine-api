@@ -4,7 +4,7 @@
 
 ### Functional requirements
 Function `return_coins()`:
-- accepts only two arguments, `currywurst_price` and `eur_inserted` (stateless: has infinite amount of each coin and banknote inside),
+- accepts only two arguments, `product_price` and `eur_inserted` (stateless: has infinite amount of each coin and banknote inside),
 - accepts accepts any coins or banknotes but returns only coins and works only with EUR currency:
     - [coins denominations](https://www.ecb.europa.eu/euro/coins/html/index.en.html):
         - cents: 1, 2, 5, 10, 20, 50
@@ -22,7 +22,7 @@ Function `return_coins()`:
 - execution time: for any number <= €1000, execution time should be <1 sec
 - code extensible ?
 
-If the service is to be scaled for many currywurst machines:
+If the service is to be scaled for many product machines:
 - scalable ?
 
 

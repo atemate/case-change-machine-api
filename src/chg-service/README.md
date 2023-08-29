@@ -14,7 +14,7 @@ INFO:     Application startup complete.
 ```
 
 ```
-$ curl 'localhost:8000/api/v1/pay?eur_inserted=10&currywurst_price_eur=4.9' | jq
+$ curl 'localhost:8000/api/v1/pay?eur_inserted=10&product_price_eur=4.9' | jq
 {
   "total_coins": 4,
   "total_eur": 5.1,

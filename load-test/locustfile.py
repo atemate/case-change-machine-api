@@ -15,6 +15,6 @@ class QuickstartUser(HttpUser):
     def get_pay(self):
         input = _get_random_2digit_float(1000)
         price = _get_random_2digit_float(25)
-        query = f"/pay?eur_inserted={input}&currywurst_price_eur={price}"
+        query = f"/pay?eur_inserted={input}&product_price_eur={price}"
         logging.info(f"GET {query}")
         self.client.get(query)
