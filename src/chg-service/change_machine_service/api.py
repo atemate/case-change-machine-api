@@ -28,12 +28,12 @@ async def get_info():
 
 @api_v1.get("/pay")
 def get_pay(
-    currywurst_price_eur: float,
+    product_price_eur: float,
     eur_inserted: float,
 ):
     chg_settings = SETTINGS["change_machine"]
     kwargs: dict[str, Any] = dict(
-        currywurst_price_eur=currywurst_price_eur,
+        product_price_eur=product_price_eur,
         eur_inserted=eur_inserted,
         algorithm=chg_settings.algorithm,
         return_coins_only=chg_settings.return_coins_only,

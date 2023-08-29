@@ -32,7 +32,7 @@ def test_get_info(client):
 
 def test_get_pay(client):
     resp = client.get(
-        "/api/v1/pay", params={"currywurst_price_eur": 4.9, "eur_inserted": 10}
+        "/api/v1/pay", params={"product_price_eur": 4.9, "eur_inserted": 10}
     )
     data = resp.json()
     assert resp.status_code == 200, data
